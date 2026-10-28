@@ -28,7 +28,6 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -49,11 +48,6 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
-#include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
@@ -70,7 +64,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
-#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -98,10 +91,6 @@
 #include "brave/components/tor/tor_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
-#include "brave/browser/web_discovery/web_discovery_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
@@ -122,7 +111,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #else
   // Add tab helpers here unless they are intended for android too
   brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
-  BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -159,16 +147,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
-  brave_ads::CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
-      web_contents);
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
-  web_discovery::WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderTabHelper::MaybeCreateForWebContents(web_contents);

@@ -216,6 +216,7 @@ source_set("ui") {
       "//brave/browser/ui/webui/brave_wallet/wallet_page",
       "//brave/components/brave_wallet/browser:utils",
       "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:common_constants",
       "//brave/components/decentralized_dns/core",
     ]
 
@@ -960,11 +961,7 @@ source_set("ui") {
   }
 
   if (is_win || is_mac || is_linux) {
-    sources += [
-      "geolocation/brave_geolocation_permission_tab_helper.cc",
-      "geolocation/brave_geolocation_permission_tab_helper.h",
-      "geolocation/geolocation_utils.h",
-    ]
+    sources += [ "geolocation/geolocation_utils.h" ]
 
     deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission" ]
 
@@ -1216,6 +1213,7 @@ source_set("ui") {
         "views/infobars/web_discovery_infobar_view.cc",
         "views/infobars/web_discovery_infobar_view.h",
       ]
+      deps += [ "//brave/browser/web_discovery" ]
     }
 
     deps += [

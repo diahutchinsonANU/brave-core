@@ -224,6 +224,16 @@ const flags_ui::FeatureEntry::FeatureVariation kBraveFocusModeVariations[] = {
     {"- No URL display", kFocusModeNoUrl, nullptr}};
 #endif  // defined(TOOLKIT_VIEWS)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+const flags_ui::FeatureEntry::FeatureParam kAIChatWorkspaceNativeDirectories[] =
+    {{"workspace_native_directories", "true"}};
+
+const flags_ui::FeatureEntry::FeatureVariation
+    kAIChatWorkspaceToolsVariations[] = {
+        {"- with user-selected local directories",
+         kAIChatWorkspaceNativeDirectories, nullptr}};
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 namespace {
 const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 }  // namespace
@@ -333,6 +343,14 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "opening a full-page tab",                                          \
           kOsDesktop,                                                         \
           FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSidePanel),  \
+      },                                                                      \
+      {                                                                       \
+          "brave-wallet-card-stack-ui",                                       \
+          "Brave Wallet Card Stack UI",                                       \
+          "New card stack home UI view in Brave Wallet.",                     \
+          kOsDesktop,                                                         \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletCardStackUiFeature),        \
       })
 #else
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
@@ -562,6 +580,16 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                    \
       FEATURE_VALUE_TYPE(features::kBraveAndroidTabGroupsSettings),  \
   })
+#define BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT                   \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "brave-android-merge-install-pwa-and-create-shortcut",                  \
+      "Merge install PWA and create shortcut",                                \
+      "Merge the Install and Create shortcut app menu options into a single " \
+      "Add to Home screen action.",                                           \
+      kOsAndroid,                                                             \
+      FEATURE_VALUE_TYPE(                                                     \
+          features::kBraveAndroidMergeInstallPwaAndCreateShortcut),           \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID
@@ -569,6 +597,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_CUSTOM_SEARCH_ENGINES
 #define BRAVE_ANDROID_TAB_GROUPS_SETTINGS
+#define BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -813,12 +842,33 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatUserChoiceTool),        \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-workspace-tools",                                     \
+          "Brave AI Chat Workspace Tools",                                     \
+          "Enables AI Tools that let AI Conversation view, search, "           \
+          "and edit files within an isolated virtual file system. Requires "   \
+          "the \"WebMCP for testing\" (#enable-webmcp-testing) flag to also "  \
+          "be enabled.",                                                       \
+          kOsAll,                                                              \
+          FEATURE_WITH_PARAMS_VALUE_TYPE(                                      \
+              ai_chat::features::kAIChatWorkspaceTools,                        \
+              kAIChatWorkspaceToolsVariations, "AIChatWorkspaceTools"),        \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-chat-agent-profile",                                       \
           "Brave's AI browsing",                                               \
           "Enables Ai browsing features and only in a separate built-in "      \
           "profile.",                                                          \
           kOsWin | kOsMac | kOsLinux,                                          \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatAgentProfile),          \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-content-agent-main-profiles",                         \
+          "Brave's AI browsing in main profiles",                              \
+          "Lets conversations in main profiles offer AI browsing, not only "   \
+          "the separate built-in AI browsing profile.",                        \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatContentAgentMainProfiles),             \
       },                                                                       \
       {                                                                        \
           "brave-ai-host-specific-distillation",                               \
@@ -1701,6 +1751,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   BRAVE_YOUTUBE_FULLSCREEN_VIDEO_FIT_WORKAROUND_ANDROID                        \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
+  BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT                          \
   BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY                                     \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \

@@ -1050,6 +1050,7 @@ struct WalletInfo {
   bool is_cardano_dapp_support_enabled;
   bool is_polkadot_enabled;
   bool is_polkadot_dapp_support_enabled;
+  bool is_card_stack_ui_enabled;
 };
 
 // Browser-side handler for common panel / page things
@@ -1503,6 +1504,18 @@ const string kZCashTestnet = "zcash_testnet";
 const string kPolkadotMainnet = "polkadot_mainnet";
 
 const string kPolkadotMainnetAssetHub = "polkadot_asset_hub";
+
+const string kPolkadotAcala = "polkadot_acala";
+
+const string kPolkadotBifrost = "polkadot_bifrost";
+
+const string kPolkadotHydration = "polkadot_hydration";
+
+const string kPolkadotNeuroWeb = "polkadot_neuroweb";
+
+const string kPolkadotJamton = "polkadot_jamton";
+
+const string kPolkadotKusamaHub = "kusama_asset_hub";
 
 const string kPolkadotTestnet = "polkadot_testnet";
 
